@@ -9,9 +9,10 @@ Simple but effective admin page for any project.
 
 To install lara_admin just type in console into your project:
 
-	$ php artisan bundle:install Lara-Admin
+	$ php artisan bundle:install lara_admin
 	$ php artisan bundle:publish
-And
+
+And modify your bundle file
 
 	return array( 
 		"lara_admin" =>array(
@@ -74,6 +75,7 @@ that created different model files into the lara_admin folder ../bundles/lara_ad
 **$rules**: normal format rules for attributes models [link](http://laravel.com/docs/validation ).
 
 Edit example 
+
 	 	public $edit= array(
  		"nombre"=>array("require"=>true), 
  		"email"=>array("type"=>"email"),
