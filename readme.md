@@ -8,8 +8,8 @@ Simple but effective admin page for any project.
 ###Installation:
 
 To install lara_admin just type in console into your project:
-	$ php artisan bundle:install lara_admin
-	$ php artisan bundle:publish
+		$ php artisan bundle:install Lara-Admin
+		$ php artisan bundle:publish
 And
 
 	return array( 
