@@ -13,12 +13,13 @@
         <li class="string input required stringish" id="customer_username_input">
           <label class=" label" for="customer_username">  
             @if ( is_numeric( $id ) )
+            <?php $element_id= $id; ?>
             {{$options}}
-            $element_id= $options;
+            <?php $element_id= $options; ?>
             @else
             @if( isset( $options["title"] ) )
             {{ $options["title"] }}
-            $element_id= $options["title"] ;
+            <?php $element_id= $options["title"] ; ?>
             @else
 
             {{ $id }}
