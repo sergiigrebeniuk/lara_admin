@@ -10,12 +10,21 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 	public function action_index( $modelName ){
 		$model= $this->getClassObject( $modelName );
 		$ColumnModel= $this->addConditions( $model, $modelName  )->first();
+
+		if( $ColumnModel==null ){
+		 	return Redirect::to("/lara_admin/models/$modelName/new");
+		}
 		$columns= $this->getColumns( $ColumnModel );
 
 		$sort_options= $this->setOrderOptions( $columns );
+
+		//redirect to create
+
+
 		$models= $this->addConditions( $model, $modelName  )->order_by( $sort_options["column_order"], $sort_options["sort_direction"] )->paginate();
+		
 
-
+		
 		$request_uri= Request::server("REQUEST_URI");
 		$request_uri= preg_replace("/&order=[^&]*/", "", $request_uri);
 
@@ -31,6 +40,9 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 		}
 
 		$this->defaultAttrForLayout($modelName, $view);
+
+
+
 		return $this->response_with( array("xml", "json", "csv"),  $this->collectionToArray( $models->results ), true );
 	}
 
@@ -159,7 +171,8 @@ public function setOrderOptions( $columns ){
 			$sort_options["sort_direction"]= "asc";
 			$sort_options["column_order"]= str_replace("_asc", "", Input::get("order") );
 		}
-	}else{
+	}else if(isset( $columns ) && isset( $columns[0]) ) {
+
 		$sort_options["column_order"]= $columns[0];
 		$sort_options["sort_direction"]= "asc";
 		$sort_options["sort_invert"]= "desc";

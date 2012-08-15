@@ -46,7 +46,7 @@
         </li>
         @endforeach
 
-      </ol>/lara_admin/models/{{$modelName}}
+      </ol>
     </fieldset>
 
 
