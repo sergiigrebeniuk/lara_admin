@@ -21,7 +21,6 @@
             
             @if( isset( $options["title"] ) )
               {{ $options["title"] }}
-              <?php $element_id= $options["title"] ?>
             @else
 
             {{ $id }}
@@ -36,11 +35,12 @@
 
           <?php
           //TODO NEED HELPERS!!!
+          if(!is_array($options)){
+            $options=array();
+          }
             $type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
             $name=  $modelName."[".$element_id."]";
-            if(!is_array($options)){
-              $options=array();
-            }
+
             $field_id= strtolower($modelName)."_".strtolower($element_id);
             $options = ( !is_numeric( $options ) )? array_merge($options, array("id"=> $field_id) ): array("id"=> $field_id);
           ?>

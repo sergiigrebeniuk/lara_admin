@@ -12,14 +12,13 @@
         @foreach( $model->edit as $id => $options )
         <li class="string input required stringish" id="customer_username_input">
           <label class=" label" for="customer_username">  
-            @if ( is_numeric( $id ) )
             <?php $element_id= $id; ?>
+            @if ( is_numeric( $id ) )
             {{$options}}
             <?php $element_id= $options; ?>
             @else
             @if( isset( $options["title"] ) )
             {{ $options["title"] }}
-            <?php $element_id= $options["title"] ; ?>
             @else
 
             {{ $id }}
@@ -35,13 +34,14 @@
 
           <?php
           //TODO NEED HELPERS!!!
+            if(!is_array($options)){
+              $options=array();
+            }
             $attribute= strtolower( $element_id );
             $type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
             $name=  $modelName."[".$element_id."]";
             $field_id= strtolower($modelName)."_".strtolower($element_id);
-            if(!is_array($options)){
-              $options=array();
-            }
+
             $options = ( !is_numeric( $options ) )? array_merge($options, array("id"=> $field_id) ): array("id"=> $field_id);
   
           ?>

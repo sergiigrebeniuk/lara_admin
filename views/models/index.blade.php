@@ -66,10 +66,13 @@
 					@foreach( $modelInstance->edit as $id => $options )
 					<div class="filter_form_field filter_string">
 						<label class=" label" for="q_username">
+							<?php $element_id= $id; ?>
 							@if ( is_numeric( $id ) )
+							 <?php $element_id= $options; ?>
 							Search {{$options}}
 							@else
 							@if( isset( $options["title"] ) )
+							
 							Search {{ $options["title"] }}
 							@else
 							Search {{ $id }}
@@ -82,12 +85,12 @@
 						if(!is_numeric( $options ) ){
 						  $options=array();
 						}
-						$attribute= strtolower( $id );
+						$attribute= strtolower( $element_id );
 						$type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
-						$name=  $modelName."[".$id."]";
+						$name=  $modelName."[".$element_id."]";
 						$field_id= strtolower($modelName)."_".strtolower($id);
 						$data= Input::get( $modelName );
-						$value= (isset( $data[ $id  ] )) ? $data[ $id  ] : "";
+						$value= (isset( $data[ $element_id  ] )) ? $data[ $element_id  ] : "";
 
 						$options = ( !is_numeric( $options ) )? array_merge($options, array("id"=> $field_id) ): array("id"=> $field_id);
 
