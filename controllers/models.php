@@ -14,17 +14,12 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 		if( $ColumnModel==null ){
 		 	return Redirect::to("/lara_admin/models/$modelName/new");
 		}
+		
 		$columns= $this->getColumns( $ColumnModel );
-
 		$sort_options= $this->setOrderOptions( $columns );
-
-		//redirect to create
-
-
 		$models= $this->addConditions( $model, $modelName  )->order_by( $sort_options["column_order"], $sort_options["sort_direction"] )->paginate();
 		
 
-		
 		$request_uri= Request::server("REQUEST_URI");
 		$request_uri= preg_replace("/&order=[^&]*/", "", $request_uri);
 

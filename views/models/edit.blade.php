@@ -14,10 +14,13 @@
           <label class=" label" for="customer_username">  
             @if ( is_numeric( $id ) )
             {{$options}}
+            $element_id= $options;
             @else
             @if( isset( $options["title"] ) )
             {{ $options["title"] }}
+            $element_id= $options["title"] ;
             @else
+
             {{ $id }}
             @endif
             @endif   
@@ -31,20 +34,23 @@
 
           <?php
           //TODO NEED HELPERS!!!
-            $attribute= strtolower( $id );
+            $attribute= strtolower( $element_id );
             $type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
-            $name=  $modelName."[".$id."]";
-            $field_id= strtolower($modelName)."_".strtolower($id);
+            $name=  $modelName."[".$element_id."]";
+            $field_id= strtolower($modelName)."_".strtolower($element_id);
+            if(!is_array($options)){
+              $options=array();
+            }
             $options = ( !is_numeric( $options ) )? array_merge($options, array("id"=> $field_id) ): array("id"=> $field_id);
   
           ?>
           @if($type=="checkbox")
               <input name="{{$name}}" type="hidden" value="0" />
              {{ Form::checkbox($name, 1 , $model->$attribute, $options) }}
-             <span class="error"> {{ $model->first_error( strtolower($id) ) }} </span>
+             <span class="error"> {{ $model->first_error( strtolower($element_id) ) }} </span>
           @else
             {{Form::input( $type , $name, $model->$attribute , $options )  }} 
-             <span class="error"> {{ $model->first_error( strtolower($id) ) }} </span>
+             <span class="error"> {{ $model->first_error( strtolower($element_id) ) }} </span>
           @endif
 
         </li>

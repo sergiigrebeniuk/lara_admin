@@ -79,6 +79,9 @@
 
 						<?php
           //TODO NEED HELPERS!!!
+						if(!is_numeric( $options ) ){
+						  $options=array();
+						}
 						$attribute= strtolower( $id );
 						$type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
 						$name=  $modelName."[".$id."]";
