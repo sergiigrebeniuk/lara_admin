@@ -8,6 +8,9 @@
 |
 | Map Models  using PSR-0 standard namespace. 
  */
+Autoloader::directories(array(
+    path('bundle').'lara_admin/libraries',
+));
 
 Autoloader::namespaces(array(
 	'Admin'   => Bundle::path('lara_admin').'models',

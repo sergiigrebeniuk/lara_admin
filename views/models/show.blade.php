@@ -16,8 +16,6 @@
 		</div>
 	</div>
 
-
-
 <div id="title_bar">
 
       <span class="action_items">

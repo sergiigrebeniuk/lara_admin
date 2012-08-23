@@ -1,0 +1,9 @@
+	<link href="{{ $assets->path('css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ $assets->path('css/bootstrap-responsive.css') }}" rel="stylesheet">
+	<link href="{{ $assets->path('css/global.css') }}" rel="stylesheet">
+  <link href="{{ $assets->path('css/application.css') }}" rel="stylesheet">
+  <link href="{{ $assets->path('css/ui/jquery.ui.core.css') }}" rel="stylesheet"> 
+	<link href="{{ $assets->path('css/ui/jquery.ui.theme.css') }}" rel="stylesheet"> 
+	<link href="{{ $assets->path('css/ui/jquery.ui.datepicker.css') }}" rel="stylesheet"> 
+	<link href="{{ $assets->path('css/datepicked-addon.css') }}" rel="stylesheet"> 
+	<link href="{{ $assets->path('css/jquery.ui.slider.css') }}" rel="stylesheet"> 

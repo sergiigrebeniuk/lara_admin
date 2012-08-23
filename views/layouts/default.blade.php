@@ -10,11 +10,8 @@
   <?php
     $assets = Asset::container('container')->bundle('lara_admin');
   ?>
-	<link href="{{ $assets->path('css/bootstrap.css') }}" rel="stylesheet">
-	<link href="{{ $assets->path('css/bootstrap-responsive.css') }}" rel="stylesheet">
-	<link href="{{ $assets->path('css/global.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/facebox.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/application.css') }}" rel="stylesheet">
+
+  {{ View::make('lara_admin::share.header',  compact("assets") ); }}
   <!-- Soporte para IE6-8 de elementos HTML5 -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -89,19 +86,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ $assets->path('js/jquery-1.7.2.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-transition.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-alert.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-modal.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-dropdown.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-scrollspy.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-tab.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-tooltip.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-popover.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-button.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-collapse.js') }}"></script>
-    <script src="{{ $assets->path('js/bootstrap-carousel.js') }}"></script>
-    <script src="{{ $assets->path('js/facebox.js') }}"></script>
-    <script src="{{ $assets->path('js/application.js') }}"></script>
+
+      {{ View::make('lara_admin::share.script',  compact("assets") ); }}
   </body>
   </html>

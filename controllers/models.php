@@ -11,7 +11,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 		$model= $this->getClassObject( $modelName );
 		$ColumnModel= $this->addConditions( $model, $modelName  )->first();
 
-		if( $ColumnModel==null ){
+		if( $ColumnModel==null && Input::get($modelName)==null ){
 		 	return Redirect::to("/lara_admin/models/$modelName/new");
 		}
 		
@@ -27,6 +27,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 			$request_uri.="?";
 		}
 
+		//TODO function getCustomAction
 		$name_custom_action= "lara_admin::".Str::plural( Str::lower( $modelName )).".". preg_replace( "/action_/", "", __FUNCTION__) ;
 		if( View::exists( $name_custom_action ) !=false){
 			$view= View::make($name_custom_action , array("sort_options"=> $sort_options,"request_uri"=> $request_uri,"modelName"=> $modelName , "modelInstance"=> $model,"models"=> $models, "columns"=>$columns) );
@@ -52,7 +53,6 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 	public function action_new( $modelName ){
 		$model= $this->getClassObject( $modelName );
-
 		$view= View::make("lara_admin::models.new", array("model"=>$model, "modelName"=>$modelName) );		
 		$this->defaultAttrForLayout($modelName, $view);
 		return $this->layout;
@@ -68,8 +68,9 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 			return $this->layout;
 		}
 
+		$model= $this->uploadFiles($model, $modelName);
+
 		$model->save();
-		
 		return  Redirect::to("/lara_admin/models/$modelName");
 	}
 
@@ -102,6 +103,8 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 			return $this->layout;
 		}
 
+
+		$model= $this->uploadFiles($model, $modelName);
 		$model->save();
 		
 		return  Redirect::to("/lara_admin/models/$modelName");
@@ -115,16 +118,50 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 
 
+
+
+
+
 /**
 +++Method Helpers
 */
 
+private function uploadFiles( $model, $modelName ){
+		$attributes= $this->fileAttributes($model->edit);
+
+		foreach ($attributes as $key => $attribute) {
+			$name= InputFactory::getName($key, $attribute);
+			$imagePath= FileHelper::upload( $model, $modelName, $name, $attribute, true);
+			if ($imagePath!==false) {
+				$model->$name= $imagePath;
+			}
+		}
+		return $model;
+}
+	
+private function fileAttributes($attributes){
+	$searchFunc= function($value){
+
+			if (!isset($value["type"])) {
+				return false;
+			}
+
+			if ($value["type"]!="file") {
+				return false;
+			}
+
+			return true;
+
+		};
+
+		return array_filter( $attributes, $searchFunc);
+}
 
 public function addConditions( $model , $modelName ){
 	if(Input::get($modelName)!=null){
 		foreach ( Input::get($modelName) as $key => $value) {
 			if( !empty($value) ){
-				$model= $model->where($key, "=",$value);
+				$model= $model->where($key, "like", "%$value%");
 			}
 		}
 	}
