@@ -146,6 +146,10 @@ class InputFactory{
 			$blankTitle= $dropDownOptions["blankLabel"];
 		}
 
+		if ( isset( $dropDownOptions["valueField"] )  && !empty( $dropDownOptions["valueField"] )) {
+				$valueField= $dropDownOptions["valueField"];
+		}
+
 		$textField= $dropDownOptions["titleField"];
 		$dropDownClassName= $dropDownOptions["class"];
 
