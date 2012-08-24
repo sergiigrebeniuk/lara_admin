@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Lara admin by chalien</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Lara admin</h1>
+        <p class="header">Lara_Admin</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/chalien/lara_admin/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/chalien/lara_admin/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/chalien/lara_admin">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/chalien">chalien</a></p>
+
+
+      </header>
+      <section>
+        <h1>LARA ADMIN</h1>
+
+<p>Simple but effective admin page for any project.
+<strong>Version. 0.1.2 Alpha</strong></p>
+
+<h3>TUTORIALS</h3>
+
+<p><a href="https://github.com/chalien/lara_admin/wiki/Install">Install </a>.
+<a href="https://github.com/chalien/lara_admin/wiki/Models">Models </a>.</p>
+
+<h3>VIDEO TUTO</h3>
+
+<p>Soon.</p>
+
+<h1>CHANGE LOGS</h1>
+
+<ul>
+<li>New File Input. now  you can upload files to the server with file type option.</li>
+<li>New dropDown Input Option. Now you can use relation classes  with foreign keys  into the model.</li>
+<li>refactor new and edit view.</li>
+<li>agree like to more flexibility into the filters</li>
+<li>change option require to required into the edit option in models.</li>
+</ul><p>twitter: @_chalien
+<strong>Modified:  August 23  2012 5:30 PM</strong></p>
+
+<p><img src="http://drakarstudio.net/screen.png" alt="My image"></p>
+
+<h3>Installation:</h3>
+
+<p>To install lara_admin just type in console into your project:</p>
+
+<pre><code>$ php artisan bundle:install lara_admin
+</code></pre>
+
+<p>And modify your bundle file</p>
+
+<pre><code>return array( 
+    "lara_admin" =&gt;array(
+    'handles'=&gt; 'lara_admin',
+    'auto' =&gt; true
+    ),
+)
+
+
+$ php artisan bundle:publish
+</code></pre>
+
+<h3>Setup User</h3>
+
+<pre><code>$ php artisan lara_admin::laraAdmin:setup [test@test.com] [password] [force]
+</code></pre>
+
+<p>The fist command create a file into lara_admin/config/ with the user and password given in the console line. if you didnt  specify some user and password the default should be:</p>
+
+<pre><code>user: test@test.com
+password: passsword
+</code></pre>
+
+<p>Also, you can use force to replace the actual file with "force"  third parameter .</p>
+
+<h3>Settings Models</h3>
+
+<ul>
+<li><strong><em>Create models</em></strong></li>
+</ul><p>For create a new model type in your console:</p>
+
+<pre><code>$  php artisan  lara_admin::laraAdmin:resource [name_resources]*
+</code></pre>
+
+<p><em>Example</em></p>
+
+<pre><code>$ php artisan  lara_admin::laraAdmin:resource user role
+</code></pre>
+
+<h2><strong><em>register your new model</em></strong></h2>
+
+<p>Add the models created inside the list Config::set('laraAdmin.models') located into the file ./bundles/lara_admin/lara_admin.php </p>
+
+<pre><code>Config::set('laraAdmin.models', array( "[nameModel]") );
+</code></pre>
+
+<h3>Let's have fun</h3>
+
+<p>Go to your browser and type your lara_admin project url </p>
+
+<pre><code>http://[your_url_project]/lara_admin
+</code></pre>
+
+<h3>TODO</h3>
+
+<p><strong>Version. 0.1.2 Alpha</strong></p>
+
+<ul>
+<li>Test</li>
+<li>Refactor</li>
+<li>Implemented option new and index into the models</li>
+<li>I18n</li>
+</ul>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
