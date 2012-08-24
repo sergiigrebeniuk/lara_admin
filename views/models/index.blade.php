@@ -112,8 +112,8 @@
 						<label class=" label" for="q_created_at_gte">Created At
 						</label>
 						<input class="datetime" id="q_created_at_gte" max="10" name="created_at_gte" size="12" type="text" value="{{ Input::get("created_at_gte") }}" />
-						<span class="datetime">-</span>
-						<input class="datepicker" id="q_created_at_lte" max="10" name="created_at_lte" size="12" type="text" value="{{ Input::get("created_at_lte") }}" /></div><div class="buttons"><input id="q_submit" name="commit" type="submit" value="Filter" />
+						<span class="seperator">-</span>
+						<input class="datetime" id="q_created_at_lte" max="10" name="created_at_lte" size="12" type="text" value="{{ Input::get("created_at_lte") }}" /></div><div class="buttons"><input id="q_submit" name="commit" type="submit" value="Filter" />
 						<a href="#" class="clear_filters_btn">Clear Filters</a>
 						<input id="order" name="order" type="hidden" value="{{$sort_options["column_order"]}}_{{$sort_options["sort_direction"]}}" />
 						<input id="scope" name="scope" type="hidden" /></div>
