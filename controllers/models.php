@@ -167,11 +167,11 @@ public function addConditions( $model , $modelName ){
 	}
 
 	
-	if( Input::get("created_at_gte")!=null ){
-		$model= $model->where("created_at", ">=",  date( "Y-m-d",strtotime(Input::get("created_at_gte") ) ) ) ;
+if( Input::get("created_at_gte")!=null ){
+		$model= $model->where("created_at", ">=",  Input::get("created_at_gte")  )  ;
 	}
 	if( Input::get("created_at_lte")!=null ){
-		$model= $model->where("created_at", "<=", date( "Y-m-d",strtotime( Input::get("created_at_lte") ) ) );
+		$model= $model->where("created_at", "<=", Input::get("created_at_lte")   );
 	}
 
 	return $model;
