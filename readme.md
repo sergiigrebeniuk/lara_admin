@@ -9,9 +9,9 @@ twitter: @_chalien
 Simple but effective admin page for any project.
 
 ![My image](http://drakarstudio.net/screen.png)
-###TUTORIALS
 
-[link](https://github.com/chalien/lara_admin/wiki/_pages)
+##Links
+[Tutorial page](https://github.com/chalien/lara_admin/wiki/_pages)
 
 [Laravel Page](http://bundles.laravel.com/bundle/lara_admin)
 
