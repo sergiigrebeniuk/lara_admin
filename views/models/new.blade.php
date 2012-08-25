@@ -8,8 +8,8 @@
 
     <fieldset class="inputs">
       <ol>
-
-        @foreach( $model->edit as $id => $options )
+        <?php $t= $model->saveData() ?>
+        @foreach( $t as $id => $options )
         <li class="string input required stringish" id="customer_username_input">
          <?php $input= InputFactory::build($id, $options, $modelName, $model); ?>
          {{$input["label"]}}

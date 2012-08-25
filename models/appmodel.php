@@ -1,6 +1,7 @@
 <?php namespace Admin; 
  class Appmodel extends \Eloquent{ 
  	public $errors=array();
+ 	public $save=array();
  	public $validator;
  	public $confirmationDeleteText="Are you sure you want to delete it?";
  	public function validate(){
@@ -8,8 +9,18 @@
  		return $this->validator->passes();
  	}
 
+
  	public function first_error( $field ){
  		return  ( isset( $this->validator->errors ) ) ? $this->validator->errors->first( $field ) : "" ;
+ 	}
+
+ 	public function saveData(){
+ 		$options= $this->edit;
+
+ 		if( count( $this->new) > 0  ){
+ 			$options= $this->new;
+ 		}
+ 		return $options;
  	}
 
  	public function columns(){
