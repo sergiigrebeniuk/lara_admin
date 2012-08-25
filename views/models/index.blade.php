@@ -14,8 +14,8 @@
 												{{"sorted-".$sort_options["sort_direction"]}}
 											@endif
 										" ><a href="{{ $request_uri }}&order=
-												{{$column}}_{{$sort_options["sort_invert"]}}
-										">{{ $column }}</a></th>
+												{{$column->key}}_{{$sort_options["sort_invert"]}}
+										">{{ $column->title }}</a></th>
 										@endforeach
 										<th></th>
 									</tr>
@@ -25,7 +25,8 @@
 										
 									<tr class="@if( ($key % 2)==1 ) {{"even"}} @else {{"odd"}} @endif" >
 										@foreach ($columns as $column)
-										<td>{{ $model->$column }} </td>
+										<?php $key= $column->key ?>
+										<td>{{ $model->$key }} </td>
 										@endforeach
 										<td>
 											<a href="{{ "/lara_admin/models/$modelName/$model->id/edit"}}">Edit</a>
@@ -63,52 +64,29 @@
 
 
 					@if( isset($modelInstance) )
-					@foreach( $modelInstance->edit as $id => $options )
-					<div class="filter_form_field filter_string">
-						<label class=" label" for="q_username">
-							<?php $element_id= $id; ?>
-							@if ( is_numeric( $id ) )
-							 <?php $element_id= $options; ?>
-							Search {{$options}}
-							@else
-							@if( isset( $options["title"] ) )
-							
-							Search {{ $options["title"] }}
-							@else
-							Search {{ $id }}
-							@endif
-							@endif   
-						</label>
+						@foreach( $modelInstance->edit as $id => $options )
+						<div>
+							<?php 
+								if ( Input::get( $modelName ) !=null ) {
+									$name= InputFactory::getName($id, $options);
+									$oldInput= Input::get( $modelName );
+									$modelInstance->$name=  $oldInput[$name];
+								}
+							?>
 
-						<?php
-          //TODO NEED HELPERS!!!
-						if(!is_numeric( $options ) ){
-						  $options=array();
-						}
-						$attribute= strtolower( $element_id );
-						$type= ( isset( $options["type"] )  ) ? $options["type"] : "text";
-						$name=  $modelName."[".$element_id."]";
-						$field_id= strtolower($modelName)."_".strtolower($id);
-						$data= Input::get( $modelName );
-						$value= (isset( $data[ $element_id  ] )) ? $data[ $element_id  ] : "";
-
-						$options = ( !is_numeric( $options ) )? array_merge($options, array("id"=> $field_id) ): array("id"=> $field_id);
-
-						?>
-						@if($type=="checkbox")
-						{{ Form::checkbox($name, 1 , $value , $options) }}
-						@else
-						{{Form::input( $type , $name, $value , $options )  }}   
-						@endif
-
-					</div>
-					@endforeach
+						  <?php $input= InputFactory::build($id, $options, $modelName, $modelInstance); ?>
+						  {{$input["label"]}}
+						  {{$input["input"]}}
+						</div>
+						@endforeach
 					@endif
 
 
 
 
 					<div class="filter_form_field filter_date_range">
+						<input  name="search" type="hidden" value="search" />
+					
 						<label class=" label" for="q_created_at_gte">Created At
 						</label>
 						<input class="datetime" id="q_created_at_gte" max="10" name="created_at_gte" size="12" type="text" value="{{ Input::get("created_at_gte") }}" />

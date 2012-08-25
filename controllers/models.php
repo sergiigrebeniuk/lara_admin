@@ -9,13 +9,17 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 	public function action_index( $modelName ){
 		$model= $this->getClassObject( $modelName );
-		$ColumnModel= $this->addConditions( $model, $modelName  )->first();
+		$columnModel= $model::first();
 
-		if( $ColumnModel==null && Input::get($modelName)==null ){
-		 	return Redirect::to("/lara_admin/models/$modelName/new");
+		if (Input::get($modelName)!=null && $this->addConditions( $model, $modelName  )->first()!=null ) {
+			$columnModel= $this->addConditions( $model, $modelName  )->first();
 		}
 		
-		$columns= $this->getColumns( $ColumnModel );
+		if( $columnModel==null){
+		 	return Redirect::to("/lara_admin/models/$modelName/new");
+		}
+
+		$columns= $columnModel->columns();
 		$sort_options= $this->setOrderOptions( $columns );
 		$models= $this->addConditions( $model, $modelName  )->order_by( $sort_options["column_order"], $sort_options["sort_direction"] )->paginate();
 		
@@ -29,6 +33,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 		//TODO function getCustomAction
 		$name_custom_action= "lara_admin::".Str::plural( Str::lower( $modelName )).".". preg_replace( "/action_/", "", __FUNCTION__) ;
+		
 		if( View::exists( $name_custom_action ) !=false){
 			$view= View::make($name_custom_action , array("sort_options"=> $sort_options,"request_uri"=> $request_uri,"modelName"=> $modelName , "modelInstance"=> $model,"models"=> $models, "columns"=>$columns) );
 		}else{
@@ -68,6 +73,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 			return $this->layout;
 		}
 
+
 		$model= $this->uploadFiles($model, $modelName);
 
 		$model->save();
@@ -105,6 +111,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 
 		$model= $this->uploadFiles($model, $modelName);
+
 		$model->save();
 		
 		return  Redirect::to("/lara_admin/models/$modelName");
@@ -167,7 +174,7 @@ public function addConditions( $model , $modelName ){
 	}
 
 	
-if( Input::get("created_at_gte")!=null ){
+	if( Input::get("created_at_gte")!=null ){
 		$model= $model->where("created_at", ">=",  Input::get("created_at_gte")  )  ;
 	}
 	if( Input::get("created_at_lte")!=null ){
@@ -182,13 +189,7 @@ public function getClassObject($modelName){
 	return new $this->definitionClassname();
 }
 
-public function getColumns( $model ){
-	$columns= array();
-	if( $model!=false ){
-		$columns= array_keys( (array) $model->attributes );
-	}
-	return $columns;
-}
+
 
 
 public function setOrderOptions( $columns ){
@@ -205,7 +206,7 @@ public function setOrderOptions( $columns ){
 		}
 	}else if(isset( $columns ) && isset( $columns[0]) ) {
 
-		$sort_options["column_order"]= $columns[0];
+		$sort_options["column_order"]= $columns[0]->key;
 		$sort_options["sort_direction"]= "asc";
 		$sort_options["sort_invert"]= "desc";
 	}	
