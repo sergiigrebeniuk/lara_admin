@@ -7,7 +7,7 @@ class LaraAdmin{
 		Config::set('laraAdmin.models', array(
 				//example "Test", "User"
 			));
-		Config::set('laraAdmin.title', "Framework Drakar");
+		Config::set('laraAdmin.title', "Lara Admin");
 		
 	}
 
