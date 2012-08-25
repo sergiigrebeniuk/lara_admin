@@ -2,7 +2,7 @@
  class Appmodel extends \Eloquent{ 
  	public $errors=array();
  	public $validator;
-
+ 	public $confirmationDeleteText="Are you sure you want to delete it?";
  	public function validate(){
  		$this->validator = \Validator::make( $this->attributes , $this->rules);
  		return $this->validator->passes();

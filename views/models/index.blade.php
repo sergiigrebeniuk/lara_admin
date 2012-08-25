@@ -31,7 +31,7 @@
 											<a href="{{ "/lara_admin/models/$modelName/$model->id/edit"}}">Edit</a>
 											<a href="{{ "/lara_admin/models/$modelName/$model->id"}}">Show</a>
 											<form  class="form_delete" method="post" action="{{ '/lara_admin/models/'.$modelName.'/'. $model->id. '/delete' }}">
-												<button type="submit">delete</button>
+												<button type="submit" onClick="return confirm('{{$model->confirmationDeleteText}}')">delete</button>
 											</form>
 										</td>
 									</tr>
