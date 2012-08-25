@@ -1,8 +1,11 @@
 # LARA ADMIN
 **Version. 0.1.3 Alpha**
+
 FEEDBACK PLEASE ON GITHUB COMMENTS!!!!
+
 twitter: @_chalien
-PLEASE READ DOCUMENTATION
+
+
 Simple but effective admin page for any project.
 
 ![My image](http://drakarstudio.net/screen.png)
