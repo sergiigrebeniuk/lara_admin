@@ -173,6 +173,10 @@ public function addConditions( $model , $modelName ){
 		}
 	}
 
+	if (isset($model->defaultFilters) && count( $model->defaultFilters ) > 0 ) {
+		$model= $model->addFilters( $model->defaultFilters );
+	}
+
 	
 	if( Input::get("created_at_gte")!=null ){
 		$model= $model->where("created_at", ">=",  Input::get("created_at_gte")  )  ;

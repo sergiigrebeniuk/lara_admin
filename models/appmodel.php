@@ -2,8 +2,11 @@
  class Appmodel extends \Eloquent{ 
  	public $errors=array();
  	public $save=array();
+ 	public $filters= array();
+ 	public $defaultFilters= array();
  	public $validator;
  	public $confirmationDeleteText="Are you sure you want to delete it?";
+
  	public function validate(){
  		$this->validator = \Validator::make( $this->attributes , $this->rules);
  		return $this->validator->passes();
@@ -49,5 +52,43 @@
 
  		return $columns;
  	}
+
+
+ 	public function addFilters( $filters ){
+ 		$model= $this;
+
+ 		foreach ($filters as $nameFilter) {
+ 			$model= $this->matchFilter( $nameFilter );
+ 		}
+
+ 		return $model;
+ 	}
+
+ 	private function matchFilter( $nameFilter ){
+		if (isset( $this->filters[ $nameFilter ] ) && !empty( $this->filters[ $nameFilter ] )) {
+			$filter= $this->filters[ $nameFilter ];
+
+			if ( count($filter)!=3) {
+				throw new Exception("The paramaters for filter must be 3 (like where function)", 1);
+			}
+
+			$column= $filter[0];
+			$operator= $filter[1];
+			$value= $filter[2];
+			return $this->where( $column, $operator, $value );
+		}
+
+		return $this;
+ 	}
+
+	public function __call($method, $arguments){
+
+ 		if (in_array( $method, array_keys($this->filters) ) )  {
+ 			return $model= $this->matchFilter( $method ); 
+ 		}
+
+ 		return parent::__call($method, $arguments);
+ 	}
+
  } 
  ?> 

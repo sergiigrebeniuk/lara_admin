@@ -155,7 +155,12 @@ class InputFactory{
 
 		$definitionClassname= "Admin\\$dropDownClassName";
 		$modelDropDown=  new $definitionClassname();
-		$listOptions= SelectHelper::generateOptions( $modelDropDown::all() ,  $textField, $valueField, $blankTitle);
+
+		if(isset($dropDownOptions["filters"])){
+			$modelDropDown= $modelDropDown->addFilters( $dropDownOptions["filters"] );
+		}
+
+		$listOptions= SelectHelper::generateOptions( $modelDropDown->get() ,  $textField, $valueField, $blankTitle);
 		
 		return Form::select($attributes_input["name"],  $listOptions , $model->$id);
 	}
