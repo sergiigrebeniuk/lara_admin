@@ -10,7 +10,7 @@
 									<tr>
 										@foreach ($columns as $column)
 										<th class="sortable 
-											@if($column==$sort_options["column_order"])
+											@if($column->key==$sort_options["column_order"])
 												{{"sorted-".$sort_options["sort_direction"]}}
 											@endif
 										" ><a href="{{ $request_uri }}&order=
