@@ -19,6 +19,14 @@ class InputFactory{
 		return $name;
 	}
 
+	public static function isFile($attributes){
+		$isFile= false;
+		if ( isset( $attributes["type"] ) && $attributes["type"]=="file") {
+			$isFile= true;	
+		}
+		return $isFile;
+	}
+
 	private static function getTitle( $id, $attributes ){
 		$title= $id;
 		if ( is_numeric( $id ) ) {

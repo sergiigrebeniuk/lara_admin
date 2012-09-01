@@ -29,11 +29,11 @@
 										<td>{{ $model->$key }} </td>
 										@endforeach
 										<td>
-											<a href="{{ "/lara_admin/models/$modelName/$model->id/edit"}}">Edit</a>
-											<a href="{{ "/lara_admin/models/$modelName/$model->id"}}">Show</a>
-											<form  class="form_delete" method="post" action="{{ '/lara_admin/models/'.$modelName.'/'. $model->id. '/delete' }}">
-												<button type="submit" onClick="return confirm('{{$model->confirmationDeleteText}}')">delete</button>
-											</form>
+											  {{ HTML::link("lara_admin/models/$modelName/$model->id/edit", "Edit" )}}
+											  {{ HTML::link("lara_admin/models/$modelName/$model->id", "Show" )}}
+										 {{ Form::open("lara_admin/models/$modelName/$model->id/delete", 'POST', array("class"=>"form_delete") ) }}
+													<button type="submit" onClick="return confirm('{{$model->confirmationDeleteText}}')">delete</button>
+											{{Form::close()}}
 										</td>
 									</tr>
 									@endforeach
@@ -59,24 +59,27 @@
 		<div class="panel sidebar_section" id="filters_sidebar_section">
 			<h3>Filters</h3>
 			<div class="panel_contents">
-				<form accept-charset="UTF-8" action="/lara_admin/models/{{$modelName}}" class="filter_form" id="q_search" method="GET">
-					<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+				 {{ Form::open("lara_admin/models/$modelName", 'GET', array("class"=>"filter_form", "id"=>"q_search", "accept-charset"=>"UTF-8") ) }}
+ 
+						<div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
 
 
 					@if( isset($modelInstance) )
 						@foreach( $modelInstance->edit as $id => $options )
 						<div>
 							<?php 
+
 								if ( Input::get( $modelName ) !=null ) {
-									$name= InputFactory::getName($id, $options);
-									$oldInput= Input::get( $modelName );
-									$modelInstance->$name=  $oldInput[$name];
+										$name= InputFactory::getName($id, $options);
+										$oldInput= Input::get( $modelName );
+										$modelInstance->$name=  $oldInput[$name];
 								}
 							?>
-
-						  <?php $input= InputFactory::build($id, $options, $modelName, $modelInstance); ?>
-						  {{$input["label"]}}
-						  {{$input["input"]}}
+              @if (!InputFactory::isFile( $options ))
+							  <?php $input= InputFactory::build($id, $options, $modelName, $modelInstance); ?>
+							  {{$input["label"]}}
+							  {{$input["input"]}}
+						  @endif
 						</div>
 						@endforeach
 					@endif
@@ -93,10 +96,12 @@
 						<span class="seperator">-</span>
 						<input class="datetime" id="q_created_at_lte" max="10" name="created_at_lte" size="12" type="text" value="{{ Input::get("created_at_lte") }}" /></div><div class="buttons">
 						<input id="q_submit" name="commit" type="submit" value="Filter" />
-						<input type="reset"  value="Clear Filters" />
+						<input type="reset" class="clear_filters_btn" value="Clear Filters" />
 						<input id="order" name="order" type="hidden" value="{{$sort_options["column_order"]}}_{{$sort_options["sort_direction"]}}" />
 						<input id="scope" name="scope" type="hidden" /></div>
-					</form></div>
+			
+					{{Form::close()}}
+			</div>
 				</div>
 
 

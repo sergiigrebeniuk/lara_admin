@@ -10,11 +10,13 @@
   <?php
     $assets = Asset::container('container')->bundle('lara_admin');
   ?>
-  <link href="{{ $assets->path('css/bootstrap.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/bootstrap-responsive.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/global.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/facebox.css') }}" rel="stylesheet">
-  <link href="{{ $assets->path('css/application.css') }}" rel="stylesheet">
+  <?php
+  $assets->add('boostrap','css/bootstrap.css');
+  $assets->add('boosresponsice','css/bootstrap-responsive.css');
+  $assets->add('global','css/global.css');
+  $assets->add('application','css/application.css');
+  echo $assets->styles();
+  ?>
   <!-- Soporte para IE6-8 de elementos HTML5 -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>

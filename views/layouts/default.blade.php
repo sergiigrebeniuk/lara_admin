@@ -30,12 +30,16 @@
        <div id="header"><h1 id="site_title">{{Config::get('laraAdmin.title')}}</h1><ul class="header-item" id="tabs">
 
         @foreach( Config::get('laraAdmin.models') as $model )
-        <li id="{{$model}}" class="@if($title== $model )current@endif"><a href="/lara_admin/models/{{$model}}">{{$model}}</a></li>
+        <li id="{{$model}}" class="@if($title== $model )current@endif">
+          {{ HTML::link('lara_admin/models/'.$model, $model );}}
+        </li>
         @endforeach
       </ul>
 
       <p class="header-item" id="utility_nav">
-        <a href="/lara_admin/logout"> Logout</a>
+
+          {{ HTML::link("lara_admin/logout", "Logout") }}
+
       </p>
     </div>
       <div id="title_bar">
@@ -50,10 +54,7 @@
         <div class="action_items">
          @if( isset($title) )
          <span class="action_item">
-          <a class="btn"   href="/lara_admin/models/{{  $title }}/new">
-            New
-            {{  $title }}
-          </a>
+            {{ HTML::link("lara_admin/models/$title/new", "New $title", array("class"=>"btn") ) }}
         </span>
         @endif
       </div>

@@ -1,7 +1,14 @@
  <div class="modal-body">
    <div id="main_content">
-    <form accept-charset="UTF-8"  action= "/lara_admin/models/{{$modelName}}/{{$model->id}}" <?php  if(isset( $model->multipartFormData ) && $model->multipartFormData==true){ ?> enctype="multipart/form-data" <?php } ?>   class="formtastic customer" id="customer_new" method="post" novalidate="novalidate">
-    <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" />
+      <?php 
+      $arrayMultiPart= "";
+      if(isset( $model->multipartFormData ) && $model->multipartFormData==true){
+        $arrayMultiPart="multipart/form-data";
+      }
+    ?>
+    {{ Form::open("lara_admin/models/$modelName/$model->id", 'POST',  array("class"=>"formtastic customer" , "enctype"=>$arrayMultiPart , "novalidate"=>"novalidate" ,"accept-charset"=>"UTF-8") ) }}
+    
+     <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" />
       <input name="authenticity_token" type="hidden" value="R4quagirY/6leP6UBwANOrbzGw0hWelIYlnt8vd8UXY=" />
     </div>
 
@@ -29,6 +36,6 @@
       </li>
     </ol>
   </fieldset>
-  </form>
+  {{Form::close()}}
 </div>
 </div>
