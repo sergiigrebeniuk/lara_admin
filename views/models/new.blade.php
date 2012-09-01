@@ -35,7 +35,8 @@
         <input class="create" id="customer_submit" name="commit" type="submit" value="Create" ></input>
       </li>
       <li class="cancel">
-        <a href="/lara_admin/models/{{$modelName}}">Cancel</a>
+ 
+         {{ HTML::link("lara_admin/models/$modelName", "Cancel" ) }}
       </li>
     </ol>
   </fieldset>

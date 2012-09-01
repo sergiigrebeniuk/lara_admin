@@ -11,6 +11,7 @@ class InputFactory{
 		return compact("label", "input");
 	}
 
+	#TODO should be pass to a new library helper file
 	public static function getName($id, $attributes){
 		$name= $id;
 		if ( is_numeric( $id ) ) {
@@ -68,6 +69,9 @@ class InputFactory{
 			break;
 			case 'textarea':
 			$field= static::generateTextArea( $id, $attributes_input, $model, $attributes);
+			break;
+			case 'radioButton':
+			$field= static::generateRadioButton( $id, $attributes_input, $model, $attributes);
 			break;
 			default:
 			$field= static::generateText( $id, $attributes_input, $model, $attributes);
@@ -141,42 +145,93 @@ class InputFactory{
 		$field[]=Form::file( $id, $attributes_input) ;
 		$field[]='<span class="error"> '. $model->first_error( strtolower( $id ) ) .'</span>';
 		return join( $field );
+
 	}
+
+
+	private static function  generateRadioButton($id, $attributes_input, $model, $attributes){
+		$radioOptions= array();
+		
+
+		if (!isset( $attributes["radioButtonOption"] )) {
+			throw new Exception("radioButtonOption is required if you want to create a radioButton input", 1);
+		}
+
+		$radioButtonOption= $attributes["radioButtonOption"];
+
+		if( is_array( $radioButtonOption["options"] )  ){
+
+			foreach ($radioButtonOption["options"] as $keyOption => $option) {
+					$value= $keyOption;
+					$title= $option;
+
+          unset( $attributes["radioButtonOption"] );
+
+          if ($value == $model->$id) {
+          	$activeOption=true;
+          }else{
+          	$activeOption=false;
+          }
+
+          $test=  Form::radio( $attributes_input["name"],  $value , $activeOption , $attributes  ) . "<span> $title </span>";
+          array_push( $radioOptions , $test);
+			}
+			
+		}
+
+
+		return   implode(" ", $radioOptions);
+	}
+
 
 	private static function  generateDropDown($id, $attributes_input, $model, $attributes){
 		$blankTitle=null;
 		$valueField= "id";
 		$textField= null;
 
-		static::validateDataForDropDown( $attributes );
+		
+		if (!isset( $attributes["dropDownOptions"] )) {
+			throw new Exception("DropDownOption is required if you want to create a dropDown input", 1);
+		}
+
 		$dropDownOptions= $attributes["dropDownOptions"];
+
 		if (isset( $dropDownOptions["blankLabel"] )) {
 			$blankTitle= $dropDownOptions["blankLabel"];
 		}
 
-		if ( isset( $dropDownOptions["valueField"] )  && !empty( $dropDownOptions["valueField"] )) {
-				$valueField= $dropDownOptions["valueField"];
+		if( array_key_exists( "options", $dropDownOptions) && is_array( $dropDownOptions["options"] )  ){
+			$listOptions= array();
+			if (isset($blankTitle)) {
+				$listOptions[""]=$blankTitle;
+			}
+			$listOptions= array_merge( $listOptions ,$dropDownOptions["options"]);
+		}else{
+			static::validateDataForDropDown( $attributes );
+
+			if ( isset( $dropDownOptions["valueField"] )  && !empty( $dropDownOptions["valueField"] )) {
+					$valueField= $dropDownOptions["valueField"];
+			}
+
+			$textField= $dropDownOptions["titleField"];
+			$dropDownClassName= $dropDownOptions["class"];
+
+			$definitionClassname= "Admin\\$dropDownClassName";
+			$modelDropDown=  new $definitionClassname();
+
+			if(isset($dropDownOptions["filters"])){
+				$modelDropDown= $modelDropDown->addFilters( $dropDownOptions["filters"] );
+			}
+
+			$listOptions= SelectHelper::generateOptions( $modelDropDown->get() ,  $textField, $valueField, $blankTitle);
+
 		}
 
-		$textField= $dropDownOptions["titleField"];
-		$dropDownClassName= $dropDownOptions["class"];
-
-		$definitionClassname= "Admin\\$dropDownClassName";
-		$modelDropDown=  new $definitionClassname();
-
-		if(isset($dropDownOptions["filters"])){
-			$modelDropDown= $modelDropDown->addFilters( $dropDownOptions["filters"] );
-		}
-
-		$listOptions= SelectHelper::generateOptions( $modelDropDown->get() ,  $textField, $valueField, $blankTitle);
-		
 		return Form::select($attributes_input["name"],  $listOptions , $model->$id);
 	}
 
 	private static function  validateDataForDropDown( $attributes ){
-		if (!isset( $attributes["dropDownOptions"] )) {
-			throw new Exception("DropDownOption is required if you want to create a dropDown input", 1);
-		}
+
 
 		if (!isset( $attributes["dropDownOptions"]["class"] )) {
 			throw new Exception("Not Found Property dropDownClass", 1);
