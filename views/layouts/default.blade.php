@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="utf-8">
-	<title>Framework Domicilios</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
+  <meta charset="utf-8">
+  <title>Framework Domicilios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
 
-	<!--styles -->
+  <!--styles -->
   <?php
     $assets = Asset::container('container')->bundle('lara_admin');
   ?>
@@ -29,9 +29,23 @@
       <div id="wrapper">
        <div id="header"><h1 id="site_title">{{Config::get('laraAdmin.title')}}</h1><ul class="header-item" id="tabs">
 
-        @foreach( Config::get('laraAdmin.models') as $model )
-        <li id="{{$model}}" class="@if($title== $model )current@endif">
-          {{ HTML::link('lara_admin/models/'.$model, $model );}}
+        @foreach( Config::get('laraAdmin.models') as $key=>$model )
+        <?php
+          $modelNameToolbar= $model;
+          $modeTitleToolBar= $model;
+
+          if (!is_numeric( $key )){
+            $modelNameToolbar= $key;
+          }
+
+          if ( isset( $model ) && is_array( $model ) && array_key_exists( "title", $model ) ) {
+            $modeTitleToolBar= $model["title"];
+          }
+
+
+        ?>
+        <li id="{{$modelNameToolbar}}" class="@if($title== $modelNameToolbar )current@endif">
+          {{ HTML::link('lara_admin/models/'.$modelNameToolbar, $modeTitleToolBar );}}
         </li>
         @endforeach
       </ul>
