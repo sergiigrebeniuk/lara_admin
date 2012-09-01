@@ -1,5 +1,5 @@
 # LARA ADMIN
-**Version. 0.1.3 Alpha**
+**Version. 0.1.4 Alpha**
 
 FEEDBACK PLEASE ON GITHUB COMMENTS!!!!
 
@@ -21,3 +21,5 @@ Simple but effective admin page for any project.
 
 - Test
 - Refactor
+- reports pages
+- statistics pages
