@@ -74,9 +74,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 	
 		$model= $this->uploadFiles($model, $modelName);
-
-
-		$model->save();
+			$model->save();
 
 
 		return  Redirect::to("/lara_admin/models/$modelName");
@@ -142,7 +140,7 @@ private function uploadFiles( $model, $modelName ){
 			$name= InputFactory::getName($key, $attribute);
 			$imagePath= FileHelper::upload( $model, $modelName, $name, $attribute, true);
 			if ($imagePath!==false) {
-				$model->$name= $imagePath;
+				$model->$name= $imagePath[ "fileName" ];
 			}
 		}
 		return $model;
