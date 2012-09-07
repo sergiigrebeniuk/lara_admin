@@ -10,7 +10,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 	public function action_index( $modelName ){
 		$model= $this->getClassObject( $modelName );
 		$columnModel= $model::first();
-
+		Input::flash();
 		if (Input::get($modelName)!=null && $this->addConditions( $model, $modelName  )->first()!=null ) {
 			$columnModel= $this->addConditions( $model, $modelName  )->first();
 		}
@@ -21,7 +21,7 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 
 		$columns= $columnModel->columns();
 		$sort_options= $this->setOrderOptions( $columns );
-		$models= $this->addConditions( $model, $modelName  )->order_by( $sort_options["column_order"], $sort_options["sort_direction"] )->paginate();
+		$models= $this->addConditions( $model, $modelName  )->order_by( $sort_options["column_order"], $sort_options["sort_direction"] )->paginate( $model->perPage );
 		
 
 		$request_uri= Request::server("REQUEST_URI");
@@ -41,7 +41,6 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 		}
 
 		$this->defaultAttrForLayout($modelName, $view);
-
 
 
 		return $this->response_with( array("xml", "json", "csv"),  $this->collectionToArray( $models->results ), true );
@@ -73,10 +72,13 @@ class lara_admin_models_controller extends Lara_admin_Controller{
 			return $this->layout;
 		}
 
-
+	
 		$model= $this->uploadFiles($model, $modelName);
 
+
 		$model->save();
+
+
 		return  Redirect::to("/lara_admin/models/$modelName");
 	}
 
@@ -167,8 +169,12 @@ private function fileAttributes($attributes){
 public function addConditions( $model , $modelName ){
 	if(Input::get($modelName)!=null){
 		foreach ( Input::get($modelName) as $key => $value) {
-			if( !empty($value) ){
+			if( !empty($value) && preg_match("/(_gte|_lte)/", $key)===false){
 				$model= $model->where($key, "like", "%$value%");
+			}
+
+			if( !empty($value) && preg_match("/(_gte|_lte)/", $key)){
+				$model= $this->createConditionRange($model, $key, $value);
 			}
 		}
 	}
@@ -188,10 +194,20 @@ public function addConditions( $model , $modelName ){
 	return $model;
 }
 
+public function createConditionRange($model, $id, $value){
+	$condition="<=";
+	if ( preg_match( "/_gte/", $id) ) {
+		$condition=">=";
+	}
+	return $model->where(preg_replace("/(_gte|_lte)/", "", $id), $condition, $value ) ;
+}
+
+
 public function getClassObject($modelName){
 	$this->definitionClassname= "Admin\\$modelName";
 	return new $this->definitionClassname();
 }
+
 
 
 

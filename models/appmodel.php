@@ -5,8 +5,9 @@
  	public $filters= array();
  	public $defaultFilters= array();
  	public $validator;
+ 	public $perPage =null;
  	public $confirmationDeleteText="Are you sure you want to delete it?";
-
+  private $overloadingData = array();
  	public function validate(){
  		$this->validator = \Validator::make( $this->attributes , $this->rules);
  		return $this->validator->passes();
@@ -89,6 +90,8 @@
 
  		return parent::__call($method, $arguments);
  	}
+
+
 
  } 
  ?> 

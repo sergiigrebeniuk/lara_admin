@@ -7,6 +7,7 @@
 						<div class="index_as_table">
 							<table class="index_table" border="0" cellspacing="0" id="customers" cellpadding="0">
 								<thead>
+							
 									<tr>
 										@foreach ($columns as $column)
 										<th class="sortable 
@@ -26,7 +27,8 @@
 									<tr class="@if( ($key % 2)==1 ) {{"even"}} @else {{"odd"}} @endif" >
 										@foreach ($columns as $column)
 										<?php $key= $column->key ?>
-										<td>{{ $model->$key }} </td>
+										<td>{{ DataHelper::get($model, $key) }} </td>
+
 										@endforeach
 										<td>
 											  {{ HTML::link("lara_admin/models/$modelName/$model->id/edit", "Edit" )}}
@@ -42,9 +44,10 @@
 						</div>
 					</div>
 				</div>
-				<div id="index_footer">
-					{{$models->links()}}
-					<div class="pagination_information">{{$modelName}}s  <b>{{$models->total}}</b> en total</div>
+				<div id="index_footer">	
+
+					{{$models->appends( Input::except( array("page") ) )->links()}}
+					<div class="pagination_information">{{$modelName}}s  <b>{{$models->total}}</b> Total</div>
 					<div class="download_links">Download:&nbsp;	
 					   <a href="{{ $request_uri }}&format=csv" target="self">CSV</a>&nbsp;
 						<a href="{{ $request_uri  }}&format=xml" target="self">XML</a>&nbsp;
@@ -67,18 +70,54 @@
 					@if( isset($modelInstance) )
 						@foreach( $modelInstance->edit as $id => $options )
 						<div>
-							<?php 
-
-								if ( Input::get( $modelName ) !=null ) {
-										$name= InputFactory::getName($id, $options);
-										$oldInput= Input::get( $modelName );
-										$modelInstance->$name=  $oldInput[$name];
-								}
-							?>
+					
               @if (!InputFactory::isFile( $options ))
-							  <?php $input= InputFactory::build($id, $options, $modelName, $modelInstance); ?>
-							  {{$input["label"]}}
-							  {{$input["input"]}}
+  							<?php 
+                if ( Input::get( $modelName ) !=null ) {
+                		$name= InputFactory::getName($id, $options);
+                		$oldInput= Input::get( $modelName );
+                		if (isset($oldInput[$name])) {
+                			$modelInstance->$name=  $oldInput[$name];
+                		}
+                		//TODO refactor
+                		if (isset($oldInput[$name."_lte"])) {
+                			$nameInput= $name."_lte";
+                			$modelInstance->{$nameInput}=  $oldInput[$nameInput];
+                		}
+                		if (isset($oldInput[$name."_gte"])) {
+                			$nameInput= $name."_gte";
+                			$modelInstance->{$nameInput}=  $oldInput[$nameInput];
+                		}
+                		
+                }
+  							?>
+							  <?php 
+							  	//TODO refactor
+							  	if( isset( $options["class"] ) && preg_match("/(date|datetime|time)/", $options["class"]) ){
+							  		$options["size"]=12;
+							  		$title= InputFactory::getTitle($id, $options); 
+							  		$input_gte= InputFactory::build($id."_gte", $options, $modelName, $modelInstance);
+										$input_lte= InputFactory::build($id."_lte", $options, $modelName, $modelInstance);
+										?>
+										<div class="filter_form_field filter_date_range">
+										 	<label class=" label" for="q_created_at_gte">{{$title}}</label>
+										 	{{$input_gte["input"]}}
+										  <span class="seperator">-</span> 
+											{{$input_lte["input"]}}	
+										</div>
+										<?php
+							  	}else{
+							  		$input= InputFactory::build($id, $options, $modelName, $modelInstance); 
+							  		echo $input["label"];
+							 			echo $input["input"];
+							  	}
+							  
+
+							  ?>
+
+
+
+						
 						  @endif
 						</div>
 						@endforeach
@@ -94,7 +133,10 @@
 						</label>
 						<input class="datetime" id="q_created_at_gte" max="10" name="created_at_gte" size="12" type="text" value="{{ Input::get("created_at_gte") }}" />
 						<span class="seperator">-</span>
-						<input class="datetime" id="q_created_at_lte" max="10" name="created_at_lte" size="12" type="text" value="{{ Input::get("created_at_lte") }}" /></div><div class="buttons">
+						<input class="datetime" id="q_created_at_lte" max="10" name="created_at_lte" size="12" type="text" value="{{ Input::get("created_at_lte") }}" />
+
+					</div><div class="buttons">
+					
 						<input id="q_submit" name="commit" type="submit" value="Filter" />
 						<input type="reset" class="clear_filters_btn" value="Clear Filters" />
 						<input id="order" name="order" type="hidden" value="{{$sort_options["column_order"]}}_{{$sort_options["sort_direction"]}}" />

@@ -27,7 +27,7 @@ class FileHelper{
 			if (File::exists( $beforeImage )) {
 				File::delete( $beforeImage );
 			}
-		return $directory."/".$filename;
+		return array( "fullPath"=>$directory."/".$filename , "fileName"=> $filename);
 	}
 
 	private static function fileAttributes($attributes){

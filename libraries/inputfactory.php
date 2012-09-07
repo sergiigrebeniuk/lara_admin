@@ -11,7 +11,6 @@ class InputFactory{
 		return compact("label", "input");
 	}
 
-	#TODO should be pass to a new library helper file
 	public static function getName($id, $attributes){
 		$name= $id;
 		if ( is_numeric( $id ) ) {
@@ -28,7 +27,7 @@ class InputFactory{
 		return $isFile;
 	}
 
-	private static function getTitle( $id, $attributes ){
+	public static function getTitle( $id, $attributes ){
 		$title= $id;
 		if ( is_numeric( $id ) ) {
 			$title= $attributes;	
@@ -70,9 +69,6 @@ class InputFactory{
 			case 'textarea':
 			$field= static::generateTextArea( $id, $attributes_input, $model, $attributes);
 			break;
-			case 'radioButton':
-			$field= static::generateRadioButton( $id, $attributes_input, $model, $attributes);
-			break;
 			default:
 			$field= static::generateText( $id, $attributes_input, $model, $attributes);
 			break;
@@ -95,12 +91,18 @@ class InputFactory{
 		return $attributeInput;
 	}
 
+
+//CAMBIO
 	private static function generateText($id, $attributes_input, $model, $attributes){
 		
 		if (is_string($attributes)) {
 			$attributes= $attributes_input;
 		}
 
+		if (isset( $attributes["dateOptions"] )) {
+			unset( $attributes["dateOptions"] );
+		}
+		
 		$field= array();
 		$field[]=Form::input( $attributes_input["type"] , $attributes_input["name"],  $model->$id, $attributes) ;
 		$field[]='<span class="error"> '. $model->first_error( strtolower( $id ) ) .'</span>';
@@ -145,45 +147,9 @@ class InputFactory{
 		$field[]=Form::file( $id, $attributes_input) ;
 		$field[]='<span class="error"> '. $model->first_error( strtolower( $id ) ) .'</span>';
 		return join( $field );
-
 	}
 
-
-	private static function  generateRadioButton($id, $attributes_input, $model, $attributes){
-		$radioOptions= array();
-		
-
-		if (!isset( $attributes["radioButtonOption"] )) {
-			throw new Exception("radioButtonOption is required if you want to create a radioButton input", 1);
-		}
-
-		$radioButtonOption= $attributes["radioButtonOption"];
-
-		if( is_array( $radioButtonOption["options"] )  ){
-
-			foreach ($radioButtonOption["options"] as $keyOption => $option) {
-					$value= $keyOption;
-					$title= $option;
-
-          unset( $attributes["radioButtonOption"] );
-
-          if ($value == $model->$id) {
-          	$activeOption=true;
-          }else{
-          	$activeOption=false;
-          }
-
-          $test=  Form::radio( $attributes_input["name"],  $value , $activeOption , $attributes  ) . "<span> $title </span>";
-          array_push( $radioOptions , $test);
-			}
-			
-		}
-
-
-		return   implode(" ", $radioOptions);
-	}
-
-
+	
 	private static function  generateDropDown($id, $attributes_input, $model, $attributes){
 		$blankTitle=null;
 		$valueField= "id";
@@ -231,7 +197,9 @@ class InputFactory{
 	}
 
 	private static function  validateDataForDropDown( $attributes ){
-
+		if (!isset( $attributes["dropDownOptions"] )) {
+			throw new Exception("DropDownOption is required if you want to create a dropDown input", 1);
+		}
 
 		if (!isset( $attributes["dropDownOptions"]["class"] )) {
 			throw new Exception("Not Found Property dropDownClass", 1);
