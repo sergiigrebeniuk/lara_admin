@@ -169,11 +169,12 @@ public function addConditions( $model , $modelName ){
 		foreach ( Input::get($modelName) as $key => $value) {
 			if( !empty($value) && preg_match("/(_gte|_lte)/", $key)===false){
 				$model= $model->where($key, "like", "%$value%");
+			}elseif ( !empty($value) && preg_match("/(_gte|_lte)/", $key) ) {
+				 $model= $this->createConditionRange($model, $key, $value);
+			}elseif( !empty($value) ){
+					$model= $model->where($key, "like", "%$value%");
 			}
 
-			if( !empty($value) && preg_match("/(_gte|_lte)/", $key)){
-				$model= $this->createConditionRange($model, $key, $value);
-			}
 		}
 	}
 
@@ -191,6 +192,7 @@ public function addConditions( $model , $modelName ){
 
 	return $model;
 }
+
 
 public function createConditionRange($model, $id, $value){
 	$condition="<=";
