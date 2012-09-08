@@ -10,7 +10,7 @@ class DataHelper{
 
 			$column= $belongData["column"] ;
 			$modelName= ucwords($belongData["model"]);
-      $belongModel=  $model->belongs_to("Admin\\Author", $key)->first();
+      $belongModel=  $model->belongs_to("Admin\\$modelName", $key)->first();
 
 			if ( isset($belongModel) ) {
 				$data= $belongModel->$column;
