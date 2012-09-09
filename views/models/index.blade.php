@@ -27,7 +27,7 @@
 									<tr class="@if( ($key % 2)==1 ) {{"even"}} @else {{"odd"}} @endif" >
 										@foreach ($columns as $column)
 										<?php $key= $column->key ?>
-										<td>{{ DataHelper::get($model, $key) }} </td>
+										<td>{{ DataHelper::get($model, $key, "index") }} </td>
 
 										@endforeach
 										<td>
