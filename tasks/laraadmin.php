@@ -21,6 +21,7 @@ public function setup( $arguments ){
 	$content[]="?> ";
 	$DS= DIRECTORY_SEPARATOR;
 
+
 	$path = realpath(dirname(__FILE__) . $DS."..".$DS."config" ).$DS. "lara_admin.php";
 
 
@@ -36,14 +37,14 @@ public function setup( $arguments ){
 
 
 public function resource( $arguments ){
-
+	$pluralize= new Laravel\Pluralizer();
 	foreach ($arguments as $key => $model) {
-
+		
 		$content= array();
 		$nameClass= ucwords( $model );
 		$content[]="<?php namespace Admin;";
 		$content[]="class $nameClass extends Appmodel{";
-		$content[]="	public static \$table ='".$model."s'; ";
+		$content[]="	public static \$table ='". Str::plural( $model ) ."'; ";
 		$content[]="	public \$index= array(); ";
 		$content[]="	public \$new=array(); ";
 		$content[]="	public \$edit= array(); ";
