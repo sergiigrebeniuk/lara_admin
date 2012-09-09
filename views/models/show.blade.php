@@ -8,7 +8,7 @@
 					@foreach( $model->attributes as $label => $attribute )
 					<tr>
 						<th>{{$label}}</th>
-						<td>{{$attribute}}</td>
+						<td>{{ DataHelper::get($model, $label) }}</td>
 					</tr>
 					@endforeach
 				</tbody>
