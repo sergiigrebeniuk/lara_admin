@@ -19,7 +19,7 @@
 <div id="title_bar">
 
       <span class="action_items">
-		<a href="/lara_admin/models/{{$modelName}}/" class="btn">back</a>
+		{{ HTML::link("lara_admin/models/$modelName", "back" , array("class"=>"btn") ) }}
       </span>
 			
 
