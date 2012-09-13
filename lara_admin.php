@@ -8,7 +8,7 @@ class LaraAdmin{
 				//example "Test", "User"
 			));
 		Config::set('laraAdmin.title', "Lara Admin");
-		
+
 	}
 
 }

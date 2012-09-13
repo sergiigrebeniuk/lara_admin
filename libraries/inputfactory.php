@@ -69,6 +69,9 @@ class InputFactory{
 			case 'textarea':
 			$field= static::generateTextArea( $id, $attributes_input, $model, $attributes);
 			break;
+			case 'radioButton':
+			$field= static::generateRadioButton( $id, $attributes_input, $model, $attributes);
+			break;
 			default:
 			$field= static::generateText( $id, $attributes_input, $model, $attributes);
 			break;
@@ -121,6 +124,40 @@ class InputFactory{
 		return join( $field );
 	}
 
+	private static function  generateRadioButton($id, $attributes_input, $model, $attributes){
+			$radioOptions= array();
+			
+
+			if (!isset( $attributes["radioButtonOption"] )) {
+				throw new Exception("radioButtonOption is required if you want to create a radioButton input", 1);
+			}
+
+			$radioButtonOption= $attributes["radioButtonOption"];
+
+			if( is_array( $radioButtonOption["options"] )  ){
+
+				foreach ($radioButtonOption["options"] as $keyOption => $option) {
+						$value= $keyOption;
+						$title= $option;
+
+	          unset( $attributes["radioButtonOption"] );
+
+	          if ($value == $model->$id) {
+	          	$activeOption=true;
+	          }else{
+	          	$activeOption=false;
+	          }
+
+	          $test=  Form::radio( $attributes_input["name"],  $value , $activeOption , $attributes  ) . "<span> $title </span>";
+	          array_push( $radioOptions , $test);
+				}
+				
+			}
+
+
+			return   implode(" ", $radioOptions);
+		}
+
 
 	private static function generateTextArea($id, $attributes_input, $model, $attributes){
 		
@@ -172,6 +209,19 @@ class InputFactory{
 				$listOptions[""]=$blankTitle;
 			}
 			$listOptions= array_merge( $listOptions ,$dropDownOptions["options"]);
+		}elseif( array_key_exists( "optionsFromMethod", $dropDownOptions ) && is_array( $dropDownOptions["optionsFromMethod"] )  ){
+
+			$optionCustom= $dropDownOptions["optionsFromMethod"];
+			$className= $optionCustom[0];
+			$functionName= $optionCustom[1];
+
+			$definitionClassname= "Admin\\$className";
+			$modelDropDown=  new $definitionClassname();
+
+
+			$listOptions= $modelDropDown->$functionName();
+
+
 		}else{
 			static::validateDataForDropDown( $attributes );
 
