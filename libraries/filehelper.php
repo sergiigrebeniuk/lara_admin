@@ -41,7 +41,9 @@ class FileHelper{
 		
 			foreach ($sizes as $key => $size) {
 				if(! preg_match("/\\d*x\\d*/", $size) ) throw new Exception("Size doesnt have a valid format valid for $size example: ddxdd", 1) ;
-
+				if (!class_exists( "Resizer" )) {
+					throw new Exception("Bundle Resizer must be installed <br> Please got to <a href='http://bundles.laravel.com/bundle/resizer'>http://bundles.laravel.com/bundle/resizer</a>", 1);			
+				}
 
 				$filename =  $nameFile. "_$key.{$extension}";
 				$sizeOptions= preg_split("/x/", $size);
