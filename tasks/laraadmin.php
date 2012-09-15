@@ -51,7 +51,7 @@ public function resource( $arguments ){
 		$content[]="	public \$show= array(); ";
 		$content[]="	public \$rules= array(); ";
 		$content[]="}";
-		$content[]="?> ";
+		
 
 		$DS= DIRECTORY_SEPARATOR;
 		$path = path('bundle'). $DS ."lara_admin". $DS. "models". $DS . strtolower( $model ) .".php" ;
