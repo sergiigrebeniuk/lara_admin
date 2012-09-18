@@ -19,7 +19,4 @@ Autoloader::namespaces(array(
 
 Autoloader::map(array(
 	'Lara_admin_Controller' => path('bundle').'/lara_admin/controllers/lara_admin.php',
-	'LaraAdmin' => path('bundle').'/lara_admin/lara_admin.php'
 ));
-
-LaraAdmin::make();

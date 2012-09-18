@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
-	<title>Framework Domicilios</title>
+	<title>{{ Config::get('lara_admin::lara_admin.title') }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 
@@ -26,9 +26,9 @@
 <body>
 	<div class="row-fluid">
 		<div id="wrapper">
-			<div id="header"><h1 id="site_title">{{ Config::get('laraAdmin.title') }}</h1>
+			<div id="header"><h1 id="site_title">{{ Config::get('lara_admin::lara_admin.header') }}</h1>
 				<ul class="header-item" id="tabs">
-					@foreach (Config::get('laraAdmin.models') as $key => $model)
+					@foreach (Config::get('lara_admin::lara_admin.models') as $key => $model)
 						<?php
 						$modelNameToolbar = $model;
 						$modeTitleToolBar = $model;

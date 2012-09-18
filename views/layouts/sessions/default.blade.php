@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
-	<title>Framework Domicilios</title>
+	<title>{{ Config::get('lara_admin::lara_admin.title') }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="Fabian Altahona">
