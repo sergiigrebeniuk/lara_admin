@@ -23,4 +23,3 @@ Autoloader::map(array(
 ));
 
 LaraAdmin::make();
-?>
