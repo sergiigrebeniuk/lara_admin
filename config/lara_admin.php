@@ -19,4 +19,14 @@ return array(
 	 */
 	'header'	=> 'Lara Admin',
 
+	/**
+	 * User name
+	 */
+	'user'		=> '',
+
+	/**
+	 * Password hash
+	 */
+	'password'	=> 'Place MD5 hash here',
+
 );
